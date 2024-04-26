@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1"
+    />
+    <title>Responsive Navigation Bar</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #e4e4e4;
+        background-size: cover;
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        margin: 0;
+      }
+
+      .logo img {
+        width: 100px;
+        height: auto;
+      }
+
+      #header {
+        padding: 20px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #022335;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+
+      .container {
+        max-width: 1100px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 0 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .toggle-button {
+        display: block;
+        width: 40px;
+        cursor: pointer;
+      }
+
+      .main_nav {
+        float: right;
+      }
+
+      .main_nav ul {
+        margin: 0;
+        padding: 0px;
+        list-style: none;
+      }
+
+      .main_nav ul li {
+        float: left;
+        margin: 0 0 0 30px;
+        position: relative;
+        font-size: 20px;
+        letter-spacing: 1px;
+        font-weight: 300;
+        overflow: hidden;
+      }
+
+      .main_nav ul li a {
+        color: white;
+        display: block;
+        line-height: 1.4;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .main_nav ul li a:hover {
+        color: #e3e0cd;
+      }
+
+      .main_nav ul li.active a {
+        color: #ffd700;
+      }
+
+      .main_nav ul li a:before {
+        content: "";
+        position: absolute;
+        left: 100%;
+        top: 0;
+        height: 1px;
+        width: 100%;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .main_nav ul li a:after {
+        content: "";
+        position: absolute;
+        right: 100%;
+        bottom: 0;
+        height: 1px;
+        width: 100%;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .main_nav ul li:hover a:before {
+        left: 0;
+      }
+
+      .main_nav ul li:hover a:after {
+        right: 0;
+      }
+
+      /* This Media Query use for iPad Portrait View */
+      @media only screen and (min-width: 768px) and (max-width: 991px) {
+        .main_nav ul li {
+          margin: 0 0 0 15px;
+          font-size: 16px;
+        }
+      }
+
+      @media screen and (min-width: 768px) {
+        .toggle-button {
+          display: none;
+        }
+      }
+
+      /* This Media Query use for Mobile View */
+      @media screen and (max-width: 767px) {
+        .toggle-button {
+          display: block;
+          position: relative;
+          z-index: 10;
+        }
+
+        .main_nav {
+          position: fixed;
+          left: 0;
+          top: 73px;
+          padding: 0;
+          background: #053e5d;
+          z-index: 5;
+          height: calc(100vh - 74px);
+          width: calc(100% - 80px);
+          transition: all 0.3s ease-out;
+          transform: translateX(-100%);
+        }
+
+        .main_nav ul li {
+          float: none;
+          margin: 0 !important;
+          padding: 0 !important;
+          border-bottom: 1px solid;
+          text-align: center;
+        }
+
+        .main_nav ul li a {
+          display: block;
+          color: #fff;
+          padding: 10px;
+        }
+
+        .main_nav:after {
+          content: "";
+          position: absolute;
+          left: 100%;
+          top: 0;
+          height: 100%;
+          width: 0;
+          background: rgba(0, 0, 0, 0.7);
+        }
+
+        .main_nav.active {
+          transform: translateX(0%);
+        }
+
+        .main_nav.active:after {
+          width: 1000%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header id="header">
+      <!--header-start-->
+      <div class="container">
+        <div class="header_left">
+          <a class="logo" href="#"><img src="image/logo.png" alt="logo" /></a>
+        </div>
+        <div class="header_right">
+          <button class="toggle-button">&#9776;</button>
+          <nav class="main_nav">
+            <ul>
+              <li><a href="nav-bar.html">Home</a></li>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Portfolio</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const navIcon = document.querySelector(".toggle-button");
+        const mainNav = document.querySelector(".main_nav");
+
+        navIcon.addEventListener("click", function () {
+          mainNav.classList.toggle("active");
+        });
+
+        mainNav.addEventListener("click", function () {
+          this.classList.remove("active");
+        });
+
+        mainNav.querySelector("ul").addEventListener("click", function (event) {
+          event.stopPropagation();
+        });
+
+        // Add event listener to each nav link to highlight the selected link
+        const navLinks = document.querySelectorAll(".main_nav ul li a");
+        navLinks.forEach(function (link) {
+          link.addEventListener("click", function () {
+            // Remove the active class from all links
+            navLinks.forEach(function (navLink) {
+              navLink.parentElement.classList.remove("active");
+            });
+            // Add the active class to the clicked link
+            this.parentElement.classList.add("active");
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
